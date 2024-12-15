@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/user.css" asp-append-version="true" />
+
+    <style>
+        body, ul, li, a {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header and Navigation Styling for User */
+        header {
+            background-color: #3c763d; /* User-specific color */
+            color: white;
+            position: static;
+            width: 100%;
+            height: 100px;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+            header nav {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 100%;
+            }
+
+        .logo {
+            padding-bottom: 80px;
+            height: 179px;
+        }
+
+        header nav ul {
+            display: flex;
+            align-items: center;
+        }
+
+            header nav ul li {
+                margin: 0 15px;
+            }
+
+                header nav ul li a {
+                    color: white;
+                    font-weight: bold;
+                    font-size: 16px;
+                    text-transform: uppercase;
+                    transition: color 0.3s ease;
+                }
+
+                    header nav ul li a:hover {
+                        color: #c3e6cb;
+                    }
+
+        .New {
+            margin-top: 80px;
+            padding: 20px;
+        }
+
+        /* Footer Styling for User */
+        footer {
+            background-color: #f9f9f9;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+            footer a {
+                color: #3c763d;
+                text-decoration: none;
+                font-weight: bold;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="New">
+                <img src="~/img/logo.png" alt="User Logo" class="logo">
+            </div>
+            <ul>
+                <li><a asp-controller="User" asp-action="UserDashboard">Dashboard</a></li>
+                <li><a asp-controller="User" asp-action="Logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div>
+        @RenderBody()
+    </div>
+    <footer>
+        <div class="New">
+            &copy; 2024 - PassportGenerationSystem - User Panel
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

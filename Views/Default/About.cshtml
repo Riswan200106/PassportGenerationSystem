@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color:black;
+            background-color: #f9f9f9;
+        }
+
+        h1, h2 {
+            color: #0033a0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            color: #555;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .about-us {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Section Style */
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* How It Works Section */
+        .system-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .step {
+            text-align: center;
+            margin: 20px;
+            flex: 1 1 200px;
+            max-width: 300px;
+        }
+
+            .step img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                margin-bottom: 10px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .step h3 {
+                font-size: 1.5em;
+                color: #0033a0;
+                margin-bottom: 10px;
+            }
+
+        /* Mission Section */
+        .mission-points {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mission-point {
+            background-color: #e6f7ff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 100%;
+            text-align: left;
+        }
+
+            .mission-point h3 {
+                color: #0033a0;
+                margin-bottom: 10px;
+            }
+
+            .mission-point p {
+                color: #555;
+            }
+
+    </style>
+</head>
+<body>
+    <div class="about-us">
+        <!-- About Us Section -->
+        <div class="section">
+            <h1>About Us</h1>
+            <p>
+                Welcome to the Passport Generation System. We are dedicated to making the passport application process easy, secure, and accessible for everyone.
+            </p>
+        </div>
+
+        <!-- About Passports Section -->
+        <div class="section">
+            <h2>About Passports</h2>
+            <p>
+                A passport is a vital document for international travel. It serves as proof of identity and nationality, ensuring you can cross borders, access consular assistance, and explore the world. Our system ensures a hassle-free process for obtaining this essential document.
+            </p>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="section">
+            <h2>How Our System Works</h2>
+            <div class="system-steps">
+                <div class="step">
+                    <img src="~/img/create.webp" alt="User Registration">
+                    <h3>1. Register</h3>
+                    <p>Sign up on our platform with your personal details to create an account.</p>
+                </div>
+                <div class="step">
+                    <img src="~/img/1.jpeg" alt="Apply for Passport">
+                    <h3>2. Apply</h3>
+                    <p>Fill out the online application form, upload required documents, and pay the fee securely.</p>
+                </div>
+                <div class="step">
+                    <img src="~/img/44.webp" alt="Track Application">
+                    <h3>3. Track</h3>
+                    <p>Use our system to track your application status in real-time from submission to approval.</p>
+                </div>
+                <div class="step">
+                    <img src="~/img/aa.webp" alt="Passport Delivery">
+                    <h3>4. Receive</h3>
+                    <p>Once approved, your passport will be delivered to your address or ready for collection.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Our Mission Section -->
+        <div class="section">
+            <h2>Our Mission</h2>
+            <div class="mission-points">
+                <div class="mission-point">
+                    <h3>1. Simplify the Process</h3>
+                    <p>We aim to make passport applications straightforward and accessible to everyone with an easy-to-use platform.</p>
+                </div>
+                <div class="mission-point">
+                    <h3>2. Ensure Security</h3>
+                    <p>We prioritize the security of your personal and payment information, ensuring a safe application experience.</p>
+                </div>
+                <div class="mission-point">
+                    <h3>3. Provide Real-Time Tracking</h3>
+                    <p>Our system allows users to track their application progress, providing updates every step of the way.</p>
+                </div>
+                <div class="mission-point">
+                    <h3>4. Deliver Fast Service</h3>
+                    <p>We strive to process and deliver passports as quickly as possible, ensuring a smooth and timely experience for our users.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "User Dashboard";
+}
+@{
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .banner {
+            background-color: brown;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .option-card {
+            background-color: #f4f4f4;
+            padding: 20px;
+            margin: 10px;
+            width: 200px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .option-card a {
+                text-decoration: none;
+                color: #4CAF50;
+                font-size: 18px;
+                display: block;
+                margin-top: 10px;
+            }
+
+                .option-card a:hover {
+                    color: #45a049;
+                }
+    </style>
+</head>
+<body>
+
+
+    <div class="banner">
+        <h2>Welcome to the User Dashboard</h2>
+    </div>
+
+
+    <h1>Passport Generation </h1>
+    <div class="options-container">
+        <div class="option-card">
+            <h3>Create Passport Application</h3>
+            <a asp-action="CreateApplication">Create Now</a>
+        </div>
+
+        <div class="option-card">
+            <h3>Edit Application</h3>
+            <a asp-action="EditApplication">Edit Now</a>
+        </div>
+
+        <div class="option-card">
+            <h3>View Application</h3>
+            <a asp-action="ApplicationList">View Now</a>
+        </div>
+
+        <div class="option-card">
+            <h3>Track Application</h3>
+            <a asp-action="TrackApplication">Track Now</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+﻿@model PassportGenerationSystem.Models.Accounts
+
+@{
+    ViewData["Title"] = "CreateUser";
+}
+<style>
+    .row, h1 {
+        padding: 20px;
+    }
+</style>
+
+<h1>Signup</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateUser">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" type="radio" value="Male" id="GenderMale" class="form-check-input" />
+                        <label for="GenderMale" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" type="radio" value="Female" id="GenderFemale" class="form-check-input" />
+                        <label for="GenderFemale" class="form-check-label">Female</label>
+                    </div>
+                </div>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <textarea asp-for="Address" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <select asp-for="State" class="form-control" id="stateDropdown">
+                    <option value="">Select State</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <!-- Add more states as needed -->
+                </select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <select asp-for="City" class="form-control" id="cityDropdown">
+                    <option value="">Select City</option>
+                </select>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <!-- Hidden Role Field -->
+            <input asp-for="Role" type="hidden" value="User" />
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <p>Already have an account? <a asp-action="SignIn">Sign In</a></p> 
+</div>
+
+<div>
+    <a style="padding: 20px;" asp-action="Index">Back to List</a>
+</div>
+
+<script>
+    document.getElementById("stateDropdown").addEventListener("change", function () {
+        const state = this.value;
+        const cityDropdown = document.getElementById("cityDropdown");
+
+        cityDropdown.innerHTML = '<option value="">Select City</option>';
+
+        const citiesByState = {
+            "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode"],
+            "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai"],
+            "Karnataka": ["Bengaluru", "Mysuru", "Mangalore"]
+        };
+
+        if (citiesByState[state]) {
+            citiesByState[state].forEach(city => {
+                const option = document.createElement("option");
+                option.value = city;
+                option.textContent = city;
+                cityDropdown.appendChild(option);
+            });
+        }
+    });
+</script>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
