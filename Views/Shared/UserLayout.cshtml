@@ -5,6 +5,7 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/user.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <style>
         body, ul, li, a {
@@ -17,7 +18,7 @@
 
         /* Header and Navigation Styling for User */
         header {
-            background-color: #3c763d; /* User-specific color */
+            background-color: #004080 ;
             color: white;
             position: static;
             width: 100%;
@@ -52,7 +53,6 @@
                     color: white;
                     font-weight: bold;
                     font-size: 16px;
-                    text-transform: uppercase;
                     transition: color 0.3s ease;
                 }
 
@@ -65,20 +65,64 @@
             padding: 20px;
         }
 
-        /* Footer Styling for User */
-        footer {
-            background-color: #f9f9f9;
+        /* Footer Styling */
+        .footer {
+            background-color: #004080; /* Light grey background */
+            color: black; /* Dark text */
+            padding: 30px 20px;
+            font-size: 1.1em;
             text-align: center;
-            border-top: 1px solid #ddd;
-            font-size: 14px;
-            padding: 10px;
         }
 
-            footer a {
-                color: #3c763d;
-                text-decoration: none;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Quote Section */
+        .footer-quote p {
+            font-size: 1.1em;
+            font-style: italic;
+            margin: 10px 0;
+            color: white;
+        }
+
+        /* Contact Information Section */
+        .footer-contact p {
+            margin: 5px 0;
+        }
+
+            .footer-contact p strong {
                 font-weight: bold;
+                color: white;
             }
+
+        .footer-contact p {
+            color: white;
+        }
+
+        /* Social Media Icons */
+        .footer-social {
+            margin: 20px 0;
+        }
+
+            .footer-social .social-icon {
+                margin: 0 15px;
+                color: white;
+                font-size: 2em;
+                transition: color 0.3s ease;
+            }
+
+                .footer-social .social-icon:hover {
+                    color: #0033a0; /* Highlight color on hover */
+                }
+
+        /* Footer Bottom Section (All Rights Reserved) */
+        .footer-bottom {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -89,16 +133,45 @@
             </div>
             <ul>
                 <li><a asp-controller="User" asp-action="UserDashboard">Dashboard</a></li>
-                <li><a asp-controller="User" asp-action="Logout">Logout</a></li>
+                <li><a asp-controller="Default" asp-action="Logout">Logout</a></li>
+
             </ul>
         </nav>
     </header>
     <div>
         @RenderBody()
     </div>
-    <footer>
-        <div class="New">
-            &copy; 2024 - PassportGenerationSystem - User Panel
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-quote">
+                <p>"A passport is not just a document, it's your gateway to the world!"</p>
+            </div>
+
+            <div class="footer-contact">
+                <p><strong>Contact Us:</strong></p>
+                <p>Phone: +1 234 567 890</p>
+                <p>Address: 1234 Passport Ave, City, Country</p>
+            </div>
+
+            <div class="footer-social">
+                <a href="https://facebook.com" target="_blank" class="social-icon">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="https://instagram.com" target="_blank" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://twitter.com" target="_blank" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://linkedin.com" target="_blank" class="social-icon">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Passport Generation System. All rights reserved.</p>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

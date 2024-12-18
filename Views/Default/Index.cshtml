@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    
     <div class="banner">
         <div class="banner-content">
             <h1>Welcome to the Passport Generation System</h1>
@@ -46,8 +53,15 @@
                 <li>Secure and user-friendly system.</li>
                 <li>Dedicated support for queries and issues.</li>
             </ul>
-            <a href="#apply" class="btn-primary">Apply Now</a>
+
         </section>
     </main>
+    <script>
+        window.setTimeout(function () {
+               $(".alert").fadeTo(5000, 0).slideUp(500, function () {
+                   $(this).remove();
+               });
+           }, 4000);
+    </script>
 </body>
 </html>

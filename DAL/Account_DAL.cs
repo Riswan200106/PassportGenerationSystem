@@ -15,7 +15,10 @@ namespace PassportGenerationSystem.DAL
             connectionString = configuration.GetConnectionString("PassportConnection");
         }
 
-        //methhod for signup new user
+        /// <summary>
+        /// Sign up a new user by inserting user details into the database.
+        /// </summary>
+        /// <param name="signup">The user account details.</param>
         public void Signup(Accounts signup)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -48,7 +51,12 @@ namespace PassportGenerationSystem.DAL
             }
         }
 
-        //method for signin
+        /// <summary>
+        /// Sign in an existing user by checking the credentials against the database.
+        /// </summary>
+        /// <param name="Username">The username of the user.</param>
+        /// <param name="Password">The password of the user.</param>
+        /// <returns>The user account details if credentials match, otherwise null.</returns>
         public Accounts Signin(string Username, string Password)
         {
             Accounts user = null;
@@ -85,9 +93,10 @@ namespace PassportGenerationSystem.DAL
             return user;
         }
 
-
-
-
+        /// <summary>
+        /// Retrieve a list of all users from the database.
+        /// </summary>
+        /// <returns>A list of all users in the system.</returns>
         public List<Accounts> GetAllUsers()
         {
             List<Accounts> users = new List<Accounts>();
@@ -125,15 +134,17 @@ namespace PassportGenerationSystem.DAL
             }
             finally
             {
-                conn.Close(); 
+                conn.Close();
             }
 
             return users;
         }
 
-
-
-
+        /// <summary>
+        /// Delete a user account from the system based on their ID.
+        /// </summary>
+        /// <param name="id">The ID of the user to delete.</param>
+        /// <returns>True if the user is deleted, otherwise false.</returns>
         public bool DeleteUser(int id)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -157,8 +168,10 @@ namespace PassportGenerationSystem.DAL
             }
         }
 
-
-
+        /// <summary>
+        /// Add a new admin account to the system.
+        /// </summary>
+        /// <param name="admin">The admin account details.</param>
         public void AddNewAdmin(Accounts admin)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -180,21 +193,16 @@ namespace PassportGenerationSystem.DAL
                     cmd.Parameters.AddWithValue("@City", admin.City);
                     cmd.Parameters.AddWithValue("@Username", admin.Username);
                     cmd.Parameters.AddWithValue("@Password", admin.Password);
-                    cmd.Parameters.AddWithValue("@Role", admin.Role); 
+                    cmd.Parameters.AddWithValue("@Role", admin.Role);
 
                     conn.Open();
-                    cmd.ExecuteNonQuery(); 
+                    cmd.ExecuteNonQuery();
                 }
-              
                 finally
                 {
                     conn.Close();
                 }
             }
         }
-
-
-
-
     }
 }

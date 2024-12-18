@@ -3,19 +3,38 @@
 @{
     ViewData["Title"] = "CreateUser";
 }
+
 <style>
-    .row, h1 {
-        padding: 20px;
+    h1, .row {
+        padding-left: 60px;
     }
+
+    .form-group {
+        padding-bottom: 20px;
+    }
+
 </style>
 
 <h1>Signup</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateUser">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+            
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -28,9 +47,10 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <input asp-for="DateOfBirth" class="form-control" type="date" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
                 <div>
@@ -42,10 +62,13 @@
                         <input asp-for="Gender" type="radio" value="Female" id="GenderFemale" class="form-check-input" />
                         <label for="GenderFemale" class="form-check-label">Female</label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" type="radio" value="Others" id="GenderOthers" class="form-check-input" />
+                        <label for="GenderOthers" class="form-check-label">Others</label>
+                    </div>
                 </div>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
@@ -58,10 +81,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
-                <textarea asp-for="Address" class="form-control" rows="4"></textarea>
+                <input asp-for="Address" class="form-control" rows="4" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="State" class="control-label"></label>
                 <select asp-for="State" class="form-control" id="stateDropdown">
@@ -81,7 +103,6 @@
                 </select>
                 <span asp-validation-for="City" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label asp-for="Username" class="control-label"></label>
                 <input asp-for="Username" class="form-control" />
@@ -97,23 +118,20 @@
                 <input asp-for="ConfirmPassword" type="password" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <!-- Hidden Role Field -->
             <input asp-for="Role" type="hidden" value="User" />
-
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Signup" class="btn btn-primary" />
             </div>
+            <div class="form-group">
+                <p>Already have an account? <a href="@Url.Action("SignIn", "Default")">Signin</a></p>
+            </div>
+
         </form>
     </div>
 </div>
 
-
 <div>
-    <p>Already have an account? <a asp-action="SignIn">Sign In</a></p> 
-</div>
-
-<div>
-    <a style="padding: 20px;" asp-action="Index">Back to List</a>
+    <a style=" padding-left: 60px;" asp-action="Index">Back to List</a>
 </div>
 
 <script>
@@ -138,11 +156,14 @@
             });
         }
     });
+
+     window.setTimeout(function () {
+            $(".alert").fadeTo(5000, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 4000);
 </script>
 
-
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -10,7 +10,7 @@ builder.Services.Configure<FormOptions>(options =>
     options.MultipartBodyLengthLimit = long.MaxValue;  // Increase file size limit
 });
 builder.Services.AddScoped<User_DAL>();
-
+builder.Services.AddScoped<Account_DAL>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

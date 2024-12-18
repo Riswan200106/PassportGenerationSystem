@@ -117,7 +117,7 @@
         <!-- Feedback Form -->
         <div class="form-container">
             <h2>Send Us a Message</h2>
-            <form action="#" method="post">
+            <form id="contactForm" method="post" onsubmit="return handleSubmit(event)">
                 <label for="name">Your Name:</label>
                 <input type="text" id="name" name="name" placeholder="Enter your name" required>
 
@@ -129,6 +129,10 @@
 
                 <button type="submit">Submit</button>
             </form>
+
+            <div id="successMessage" style="display:none; color: green;">
+                Message sent successfully!
+            </div>
         </div>
 
         <!-- Contact Details -->
@@ -152,4 +156,20 @@
         </div>
     </div>
 </body>
+
+<script>
+    function handleSubmit(event) {
+        event.preventDefault(); // Prevent the default form submission
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var message = document.getElementById('message').value;
+
+        if (name && email && message) {
+            document.getElementById('successMessage').style.display = 'block';
+            document.getElementById('contactForm').reset();
+        } else {
+            alert("Please fill in all the fields.");
+        }
+    }
+</script>
 </html>

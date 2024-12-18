@@ -11,10 +11,12 @@ namespace PassportGenerationSystem.Models
 
         [Required]
         [Display(Name = "First Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name must contain letters only.")]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name")]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last name must contain letters only.")]
         public string LastName { get; set; }
 
         [Required]
@@ -28,6 +30,7 @@ namespace PassportGenerationSystem.Models
 
         [Required]
         [Phone]
+        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must start with 6, 7, 8, or 9 and be 10 digits long.")]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
@@ -50,18 +53,22 @@ namespace PassportGenerationSystem.Models
 
         [Required]
         [Display(Name = "Username")]
+        [RegularExpression(@"^[a-zA-Z0-9]{6,}$", ErrorMessage = "Username must be at least 6 characters long and contain only letters and numbers.")]
         public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\W).{8,}$",
+        ErrorMessage = "Password must be at least 8 characters long, contain at least one uppercase letter, and one symbol.")]
         public string Password { get; set; }
 
-        [NotMapped] // Exclude from database mapping
+        [NotMapped] 
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
+
 
         [Required]
         [Display(Name = "Role")]

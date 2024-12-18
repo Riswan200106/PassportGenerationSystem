@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace PassportGenerationSystem.Models
 {
@@ -51,10 +53,11 @@ namespace PassportGenerationSystem.Models
         [Display(Name = "City")]
         public string City { get; set; }
 
+        [BindNever]
         [Display(Name = "Applicant Photo")]
         public string PhotoBase64 { get; set; } = null;
 
-
+        [BindNever]
         [Display(Name = "Proof Document")]
         public string DocumentBase64 { get; set; } = null;
 
@@ -65,15 +68,9 @@ namespace PassportGenerationSystem.Models
         [Required(ErrorMessage = "Marital Status is required.")]
         [Display(Name = "Marital Status")]
         public string MaritalStatus { get; set; }
+        public string Status { get; set; }
 
-        [Required(ErrorMessage = "Username is required.")]
-        [Display(Name = "Username")]
-        [StringLength(50)]
-        public string Username { get; set; }
+        public int UserId { get; set; } 
 
-        [Required(ErrorMessage = "Password is required.")]
-        [Display(Name = "Password")]
-        [StringLength(50)]
-        public string Password { get; set; }
     }
 }
