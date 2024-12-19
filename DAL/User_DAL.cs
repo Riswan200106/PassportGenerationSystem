@@ -10,7 +10,7 @@ namespace PassportGenerationSystem.DAL
         private readonly string connectionString;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="User_DAL"/> class.
+        /// Initializes a new instance of the User_DAL class.
         /// Sets the connection string from the appsettings.json file.
         /// </summary>
         public User_DAL()

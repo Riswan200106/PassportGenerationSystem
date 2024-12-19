@@ -164,8 +164,8 @@
         var email = document.getElementById('email').value;
         var message = document.getElementById('message').value;
 
-        if (name && email && message) {
-            document.getElementById('successMessage').style.display = 'block';
+        if (name && email && message) {  
+            alert("Message sent successfully!");
             document.getElementById('contactForm').reset();
         } else {
             alert("Please fill in all the fields.");

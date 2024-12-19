@@ -9,14 +9,14 @@ namespace PassportGenerationSystem.Models
     {
         public int AppID { get; set; }
 
-        [Required(ErrorMessage = "First Name is required.")]
+        [Required]
         [Display(Name = "First Name")]
-        [StringLength(50)]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name must contain letters only.")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last Name is required.")]
+        [Required]
         [Display(Name = "Last Name")]
-        [StringLength(50)]
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last name must contain letters only.")]
         public string LastName { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is required.")]
@@ -27,9 +27,10 @@ namespace PassportGenerationSystem.Models
         [Display(Name = "Gender")]
         public string Gender { get; set; }
 
-        [Required(ErrorMessage = "Phone Number is required.")]
+        [Required]
+        [Phone]
+        [RegularExpression(@"^[6-9]\d{9}$", ErrorMessage = "Phone number must start with 6, 7, 8, or 9 and be 10 digits long.")]
         [Display(Name = "Phone Number")]
-        [StringLength(15)]
         public string PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
