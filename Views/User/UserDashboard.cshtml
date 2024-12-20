@@ -29,7 +29,7 @@
 
         /* Banner Section */
         .banner {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/ban1.webp');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/user.png');
             background-size: cover;
             background-position: center;
             height: 600px;
@@ -121,6 +121,12 @@
     {
         <div class="alert alert-success">
             @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
         </div>
     }
    

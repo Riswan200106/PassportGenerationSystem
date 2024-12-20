@@ -30,6 +30,27 @@ namespace PassportGenerationSystem.Controllers
             return View();
         }
 
+
+        [HttpPost]
+        public IActionResult SubmitFeedback(Feedback feedback)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    accountDal.AddFeedback(feedback); 
+                    TempData["SuccessMessage"] = "Thank you for your feedback!";
+                    return RedirectToAction("Contact");
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
+            }
+
+            return View("Contact");
+        }
+
         /// <summary>
         /// Displays the home page.
         /// </summary>
@@ -117,7 +138,7 @@ namespace PassportGenerationSystem.Controllers
                         }
                         else if (user.Role == "User")
                         {
-                            TempData["SuccessMessage"] = $"Welcome, {user.FirstName}!";
+                            TempData["SuccessMessage"] = $"Welcome, {user.FirstName + user.LastName}";
                             return RedirectToAction("UserDashboard", "User");
                         }
                         else

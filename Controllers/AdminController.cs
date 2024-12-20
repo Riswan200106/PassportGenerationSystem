@@ -332,5 +332,30 @@ namespace PassportGenerationSystem.Controllers
 
             return View(app);
         }
+
+        /// <summary>
+        /// Displays a list of feedback submitted by users.
+        /// </summary>
+        /// <returns>Returns the view with the list of feedback.</returns>
+        public IActionResult ViewFeedback()
+        {
+            List<Feedback> feedbackList = new List<Feedback>();
+
+            try
+            {
+                feedbackList = accountDal.GetAllFeedback(); 
+                if (feedbackList.Count == 0)
+                {
+                    TempData["ErrorMessage"] = "No feedback available.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while fetching feedback: " + ex.Message;
+            }
+
+            return View(feedbackList); 
+        }
+
     }
 }

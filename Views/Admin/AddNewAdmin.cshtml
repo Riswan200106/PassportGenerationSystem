@@ -53,6 +53,10 @@
                         <input asp-for="Gender" type="radio" value="Female" id="GenderFemale" class="form-check-input" />
                         <label for="GenderFemale" class="form-check-label">Female</label>
                     </div>
+                    <div class="form-check form-check-inline">
+                        <input asp-for="Gender" type="radio" value="Others" id="GenderOthers" class="form-check-input" />
+                        <label for="GenderOthers" class="form-check-label">Others</label>
+                    </div>
                 </div>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
@@ -98,7 +102,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" type="password" class="form-control" />
+                <div class="input-group">
+                    <input asp-for="Password" type="password" class="form-control" id="passwordField" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -139,6 +150,21 @@
                 option.textContent = city;
                 cityDropdown.appendChild(option);
             });
+        }
+    });
+
+     document.getElementById("togglePassword").addEventListener("click", function () {
+        const passwordField = document.getElementById("passwordField");
+        const toggleIcon = this.querySelector("i");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
         }
     });
 </script>

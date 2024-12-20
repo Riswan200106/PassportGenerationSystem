@@ -204,5 +204,57 @@ namespace PassportGenerationSystem.DAL
                 }
             }
         }
+
+        /// <summary>
+        /// Adding a new feedback from user
+        /// </summary>
+        /// <param name="feedback">feedback model details</param>
+        public void AddFeedback(Feedback feedback)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_AddFeedback", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@Name", feedback.Name);
+                command.Parameters.AddWithValue("@Email", feedback.Email);
+                command.Parameters.AddWithValue("@Message", feedback.Message);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the feedback deatails from the database
+        /// </summary>
+        /// <returns>List of feebacks</returns>
+        public List<Feedback> GetAllFeedback()
+        {
+            List<Feedback> feedbackList = new List<Feedback>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand("sp_GetAllFeedback", connection);
+                command.CommandType = CommandType.StoredProcedure;
+
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    feedbackList.Add(new Feedback
+                    {
+                        FeedId = (int)reader["FeedId"],
+                        Name = reader["Name"].ToString(),
+                        Email = reader["Email"].ToString(),
+                        Message = reader["Message"].ToString(),
+                        CreatedAt = (DateTime)reader["CreatedAt"]
+                    });
+                }
+            }
+
+            return feedbackList;
+        }
     }
 }
