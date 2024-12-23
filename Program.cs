@@ -15,8 +15,6 @@ builder.Services.AddScoped<Account_DAL>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-
-
 // Add session services
 builder.Services.AddSession(options =>
 {

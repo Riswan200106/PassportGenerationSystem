@@ -29,6 +29,13 @@ namespace PassportGenerationSystem.Controllers
         /// <returns>View of the user dashboard.</returns>
         public IActionResult UserDashboard()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("Username")))
+            {
+                TempData["ErrorMessage"] = "Session expired. Please log in again.";
+                return RedirectToAction("Login");
+            }
+
+            ViewData["Username"] = HttpContext.Session.GetString("Username");
             return View();
         }
 

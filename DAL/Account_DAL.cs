@@ -204,53 +204,66 @@ namespace PassportGenerationSystem.DAL
                 }
             }
         }
-
         /// <summary>
-        /// Adding a new feedback from user
+        /// Adding a new feedback from the user
         /// </summary>
-        /// <param name="feedback">feedback model details</param>
+        /// <param name="feedback">Feedback model details</param>
         public void AddFeedback(Feedback feedback)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("sp_AddFeedback", connection);
-                command.CommandType = CommandType.StoredProcedure;
+                try
+                {
+                    SqlCommand command = new SqlCommand("sp_AddFeedback", connection);
+                    command.CommandType = CommandType.StoredProcedure;
 
-                command.Parameters.AddWithValue("@Name", feedback.Name);
-                command.Parameters.AddWithValue("@Email", feedback.Email);
-                command.Parameters.AddWithValue("@Message", feedback.Message);
+                    command.Parameters.AddWithValue("@Name", feedback.Name);
+                    command.Parameters.AddWithValue("@Email", feedback.Email);
+                    command.Parameters.AddWithValue("@Message", feedback.Message);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                finally
+                {
+                       connection.Close();
+                }
             }
         }
 
         /// <summary>
-        /// Retrieves the feedback deatails from the database
+        /// Retrieves the feedback details from the database
         /// </summary>
-        /// <returns>List of feebacks</returns>
+        /// <returns>List of feedback</returns>
         public List<Feedback> GetAllFeedback()
         {
             List<Feedback> feedbackList = new List<Feedback>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand("sp_GetAllFeedback", connection);
-                command.CommandType = CommandType.StoredProcedure;
-
-                connection.Open();
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                try
                 {
-                    feedbackList.Add(new Feedback
+                    SqlCommand command = new SqlCommand("sp_GetAllFeedback", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
                     {
-                        FeedId = (int)reader["FeedId"],
-                        Name = reader["Name"].ToString(),
-                        Email = reader["Email"].ToString(),
-                        Message = reader["Message"].ToString(),
-                        CreatedAt = (DateTime)reader["CreatedAt"]
-                    });
+                        feedbackList.Add(new Feedback
+                        {
+                            FeedId = (int)reader["FeedId"],
+                            Name = reader["Name"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Message = reader["Message"].ToString(),
+                            CreatedAt = (DateTime)reader["CreatedAt"]
+                        });
+                    }
+                }
+                finally
+                {
+                        connection.Close();
                 }
             }
 
