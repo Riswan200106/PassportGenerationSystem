@@ -22,6 +22,12 @@ namespace PassportGenerationSystem.Controllers
         /// <returns>Returns the admin dashboard view.</returns>
         public IActionResult AdminDashboard()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                TempData["ErrorMessage"] = "You must sign in first.";
+                return RedirectToAction("SignIn", "Default");
+            }
+
             return View();
         }
 
@@ -35,6 +41,12 @@ namespace PassportGenerationSystem.Controllers
 
             try
             {
+                if (HttpContext.Session.GetInt32("UserId") == null)
+                {
+                    TempData["ErrorMessage"] = "You must sign in first.";
+                    return RedirectToAction("SignIn", "Default");
+                }
+
                 users = accountDal.GetAllUsers();
                 if (users.Count == 0)
                 {
@@ -142,6 +154,12 @@ namespace PassportGenerationSystem.Controllers
         /// <returns>Returns the view with a list of applications.</returns>
         public IActionResult ApplicationList()
         {
+            if (HttpContext.Session.GetInt32("UserId") == null)
+            {
+                TempData["ErrorMessage"] = "You must sign in first.";
+                return RedirectToAction("SignIn", "Default");
+            }
+
             List<Application> applications = new List<Application>();
             try
             {
@@ -343,6 +361,12 @@ namespace PassportGenerationSystem.Controllers
 
             try
             {
+                if (HttpContext.Session.GetInt32("UserId") == null)
+                {
+                    TempData["ErrorMessage"] = "You must sign in first.";
+                    return RedirectToAction("SignIn", "Default");
+                }
+
                 feedbackList = accountDal.GetAllFeedback(); 
                 if (feedbackList.Count == 0)
                 {

@@ -121,29 +121,6 @@ namespace PassportGenerationSystem.Controllers
         }
 
         /// <summary>
-        /// Displays a list of all applications submitted by the user.
-        /// </summary>
-        /// <returns>View displaying the list of applications.</returns>
-        public IActionResult ApplicationList()
-        {
-            List<Application> applications = new List<Application>();
-            try
-            {
-                applications = user_Dal.GetAllApplications();
-                if (applications.Count == 0)
-                {
-                    TempData["ErrorMessage"] = "No applications found.";
-                }
-            }
-            catch (Exception ex)
-            {
-                TempData["ErrorMessage"] = "An error occurred while fetching the application list: " + ex.Message;
-            }
-
-            return View(applications);
-        }
-
-        /// <summary>
         /// Displays the form to edit an existing application.
         /// Before editing it checks the user is signin or not if not it will not allow editing.
         /// </summary>
