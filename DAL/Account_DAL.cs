@@ -8,10 +8,12 @@ namespace PassportGenerationSystem.DAL
     {
         private readonly string connectionString;
 
-        public Account_DAL()
+        /// <summary>
+        /// Initializes a new instance of the Account_DAL class.
+        /// Sets the connection string from the appsettings.json file.
+        /// </summary>
+        public Account_DAL(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
-            var configuration = builder.Build();
             connectionString = configuration.GetConnectionString("PassportConnection");
         }
 
@@ -19,7 +21,7 @@ namespace PassportGenerationSystem.DAL
         /// Sign up a new user by inserting user details into the database.
         /// </summary>
         /// <param name="signup">The user account details.</param>
-        public void Signup(Accounts signup)
+        public string Signup(Accounts signup)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -38,11 +40,16 @@ namespace PassportGenerationSystem.DAL
                     cmd.Parameters.AddWithValue("@State", signup.State);
                     cmd.Parameters.AddWithValue("@City", signup.City);
                     cmd.Parameters.AddWithValue("@Username", signup.Username);
-                    cmd.Parameters.AddWithValue("@Password", signup.Password);
+                    cmd.Parameters.AddWithValue("@Password", signup.Password); 
                     cmd.Parameters.AddWithValue("@Role", signup.Role);
+
+                    SqlParameter resultMessageParam = new SqlParameter("@ResultMessage", SqlDbType.VarChar, 255);
+                    resultMessageParam.Direction = ParameterDirection.Output;
+                    cmd.Parameters.Add(resultMessageParam);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
+                    return resultMessageParam.Value.ToString();
                 }
                 finally
                 {
@@ -57,7 +64,7 @@ namespace PassportGenerationSystem.DAL
         /// <param name="Username">The username of the user.</param>
         /// <param name="Password">The password of the user.</param>
         /// <returns>The user account details if credentials match, otherwise null.</returns>
-        public Accounts Signin(string Username, string Password)
+        public Accounts Signin(string Username)
         {
             Accounts user = null;
 
@@ -69,7 +76,6 @@ namespace PassportGenerationSystem.DAL
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = "sp_SignIn";
                     cmd.Parameters.AddWithValue("@Username", Username);
-                    cmd.Parameters.AddWithValue("@Password", Password);
 
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -80,7 +86,8 @@ namespace PassportGenerationSystem.DAL
                             Id = reader.GetInt32(0),
                             FirstName = reader.GetString(1),
                             LastName = reader.GetString(2),
-                            Role = reader.GetString(3)
+                            Password = reader.GetString(3), // Encrypted password
+                            Role = reader.GetString(4)
                         };
                     }
                 }
@@ -92,6 +99,7 @@ namespace PassportGenerationSystem.DAL
 
             return user;
         }
+
 
         /// <summary>
         /// Retrieve a list of all users from the database.
@@ -147,24 +155,23 @@ namespace PassportGenerationSystem.DAL
         /// <returns>True if the user is deleted, otherwise false.</returns>
         public bool DeleteUser(int id)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            SqlConnection conn = null;
+            try
             {
-                try
+                conn = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand("sp_DeleteAccount", conn)
                 {
-                    SqlCommand cmd = new SqlCommand("sp_DeleteAccount", conn)
-                    {
-                        CommandType = CommandType.StoredProcedure
-                    };
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@Id", id);
 
-                    conn.Open();
-                    int rowsAffected = cmd.ExecuteNonQuery();
-                    return rowsAffected > 0;
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
+                conn.Open();
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            finally
+            {
+                conn.Close();
             }
         }
 
@@ -204,6 +211,7 @@ namespace PassportGenerationSystem.DAL
                 }
             }
         }
+
         /// <summary>
         /// Adding a new feedback from the user
         /// </summary>
@@ -226,7 +234,7 @@ namespace PassportGenerationSystem.DAL
                 }
                 finally
                 {
-                       connection.Close();
+                    connection.Close();
                 }
             }
         }
@@ -263,11 +271,38 @@ namespace PassportGenerationSystem.DAL
                 }
                 finally
                 {
-                        connection.Close();
+                    connection.Close();
                 }
             }
 
             return feedbackList;
+        }
+
+        /// <summary>
+        /// Delete a feedback from the system based on their FeedId.
+        /// </summary>
+        /// <param name="id">The ID of the feedback to delete.</param>
+        /// <returns>True if the feedback deleted, otherwise false.</returns>
+        public bool DeleteFeedback(int id)
+        {
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                SqlCommand cmd = new SqlCommand("sp_DeleteFeedback", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.AddWithValue("@FeedId", id);
+
+                connection.Open();
+                int rowsAffected = cmd.ExecuteNonQuery();
+                return rowsAffected > 0;
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
     }
 }

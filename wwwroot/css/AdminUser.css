@@ -6,7 +6,7 @@
     font-family: Arial, sans-serif;
 }
 
-/* Header and Navigation Styling for Admin */
+/* Header and Navigation Styling */
 header {
     background-color: #004080;
     color: white;
@@ -22,13 +22,34 @@ header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: 0px;
         height: 100%;
     }
 
-.logo {
-    padding-bottom: 80px;
-    height: 179px;
-    padding-left: 70px;
+/* Adjust the logo position */
+.navbar-brand {
+    margin-left: 30px; /* Moves the logo slightly to the left */
+}
+
+/* Adjust the list items position */
+.navbar-nav {
+    margin-right: 0px; /* Moves the list items slightly to the right */
+}
+
+    /* Optional: Adjust the spacing between list items */
+    .navbar-nav .nav-item {
+        margin-left: 10px; /* Adds spacing between the navigation links */
+    }
+
+/* Optional: Center-align the logo and text vertically */
+.navbar-brand img {
+    height: 70px; /* Adjust logo height if needed */
+}
+
+.navbar-brand span {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 10px; /* Space between the logo and text */
 }
 
 header nav ul {

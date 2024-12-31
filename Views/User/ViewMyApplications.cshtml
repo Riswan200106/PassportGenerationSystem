@@ -25,6 +25,13 @@
         margin-bottom: 30px;
         border-collapse: collapse;
     }
+    /* Responsive table */
+    .table-responsive {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 
         .table th, .table td {
             padding: 12px;
@@ -71,7 +78,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-responsive">
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.AppID)</th>

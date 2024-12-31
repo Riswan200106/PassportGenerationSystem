@@ -13,14 +13,11 @@ namespace PassportGenerationSystem.DAL
         /// Initializes a new instance of the User_DAL class.
         /// Sets the connection string from the appsettings.json file.
         /// </summary>
-        public User_DAL()
+        public User_DAL(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json");
-            var configuration = builder.Build();
             connectionString = configuration.GetConnectionString("PassportConnection");
         }
+
 
         /// <summary>
         /// Retrieves all applications from the database.
@@ -108,7 +105,7 @@ namespace PassportGenerationSystem.DAL
                     cmd.Parameters.AddWithValue("@GuardianName", app.GuardianName);
                     cmd.Parameters.AddWithValue("@MaritalStatus", app.MaritalStatus);
                     cmd.Parameters.AddWithValue("@Status", app.Status);
-                    cmd.Parameters.AddWithValue("@UserId", app.UserId); // Pass UserId
+                    cmd.Parameters.AddWithValue("@UserId", app.UserId); 
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -325,11 +322,7 @@ namespace PassportGenerationSystem.DAL
                             }
                         }
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("An error occurred: " + ex.Message);
-                }
+                }               
                 finally
                 {
                     connection.Close();

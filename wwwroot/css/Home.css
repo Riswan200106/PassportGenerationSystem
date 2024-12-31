@@ -26,9 +26,32 @@ header {
         height: 100%;
     }
 
-.logo {
-    height: 90px; /* Adjust logo size */
+/* Adjust the logo position */
+.navbar-brand {
+    margin-left: 0px; /* Moves the logo slightly to the left */
 }
+
+/* Adjust the list items position */
+.navbar-nav {
+    margin-right: 0px; /* Moves the list items slightly to the right */
+}
+
+    /* Optional: Adjust the spacing between list items */
+    .navbar-nav .nav-item {
+        margin-left: 10px; /* Adds spacing between the navigation links */
+    }
+
+/* Optional: Center-align the logo and text vertically */
+.navbar-brand img {
+    height: 70px; /* Adjust logo height if needed */
+}
+
+.navbar-brand span {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 10px; /* Space between the logo and text */
+}
+
 
 /* Navbar Styling */
 header nav .navbar-nav {

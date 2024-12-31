@@ -1,26 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PassportGenerationSystem.DAL;
 using PassportGenerationSystem.Models;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.IO;
 using System.Text;
 
 namespace PassportGenerationSystem.Controllers
 {
-    /// <summary>
-    /// Controller responsible for handling user-related operations like creating, editing, and viewing applications.
-    /// </summary>
     public class UserController : Controller
     {
         private readonly User_DAL user_Dal;
- 
+
         /// <summary>
-        /// Constructor to initialize UserController with a DAL instance.
+        /// Constructor to initialize UserController with a DAL instance using Dependency Injection.
         /// </summary>
-        public UserController()
+        /// <param name="userDal">Instance of User_DAL provided by the DI container.</param>
+        public UserController(User_DAL userDal)
         {
-            user_Dal = new User_DAL();
+            this.user_Dal = userDal; 
         }
 
         /// <summary>
@@ -114,6 +109,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while creating the application: " + ex.Message;
             }
 
@@ -150,6 +146,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while fetching the application: " + ex.Message;
                 return RedirectToAction("ViewMyApplications");
             }
@@ -215,6 +212,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while updating the application: " + ex.Message;
             }
             return View(app);
@@ -241,6 +239,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while fetching the application details: " + ex.Message;
                 return RedirectToAction("ApplicationList");
             }
@@ -267,17 +266,22 @@ namespace PassportGenerationSystem.Controllers
                 {
                     return NotFound("Application not found or not approved.");
                 }
+
                 string passportContent = $"Passport\n\n" +
                                          $"Name: {application.FirstName} {application.LastName}\n" +
                                          $"Passport Number: PASS-{application.AppID:D6}\n" +
                                          $"Nationality: {application.Nationality}\n" +
-                                         $"Date of Birth: {application.DateOfBirth:yyyy-MM-dd}\n";
+                                         $"Date of Birth: {application.DateOfBirth:yyyy-MM-dd}\n" +
+                                         $"Address: {application.Address}\n" +
+                                         $"State: {application.State}\n" +
+                                         $"City: {application.City}\n";
 
                 byte[] fileBytes = Encoding.UTF8.GetBytes(passportContent);
                 return File(fileBytes, "application/octet-stream", $"Passport_{application.AppID}.txt");
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = $"An error occurred while processing the request: {ex.Message}";
                 return RedirectToAction("UserDashboard");
             }
@@ -308,7 +312,8 @@ namespace PassportGenerationSystem.Controllers
                 }
             }
             catch (Exception ex)
-            {               
+            {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = $"An error occurred while fetching your applications: {ex.Message}";
             }
             return View(applications);

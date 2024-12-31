@@ -2,18 +2,26 @@
 using PassportGenerationSystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using PassportGenerationSystem.EncryptHelper;
 
 namespace PassportGenerationSystem.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly Account_DAL accountDal;
+        private readonly Account_DAL account_Dal;
         private readonly User_DAL user_Dal;
 
-        public AdminController()
+        /// <summary>
+        /// Initializes a new instance of the AdminController class.
+        /// Uses constructor injection to receive instances of Account_DAL and User_DAL.
+        /// These dependencies are assigned to the class fields for use in the controller's actions.
+        /// </summary>
+        /// <param name="accountDal">The instance of Account_DAL to be used by the controller.</param>
+        /// <param name="userDal">The instance of User_DAL to be used by the controller.</param>
+        public AdminController(Account_DAL accountDal, User_DAL userDal)
         {
-            accountDal = new Account_DAL();
-            user_Dal = new User_DAL();
+            this.account_Dal = accountDal; 
+            this.user_Dal = userDal; 
         }
 
         /// <summary>
@@ -47,7 +55,7 @@ namespace PassportGenerationSystem.Controllers
                     return RedirectToAction("SignIn", "Default");
                 }
 
-                users = accountDal.GetAllUsers();
+                users = account_Dal.GetAllUsers();
                 if (users.Count == 0)
                 {
                     TempData["ErrorMessage"] = "No users found.";
@@ -55,6 +63,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while fetching users: " + ex.Message;
             }
 
@@ -68,7 +77,7 @@ namespace PassportGenerationSystem.Controllers
         /// <returns>Returns the delete confirmation view with user details.</returns>
         public ActionResult Delete(int id)
         {
-            var user = accountDal.GetAllUsers().FirstOrDefault(u => u.Id == id);
+            var user = account_Dal.GetAllUsers().FirstOrDefault(u => u.Id == id);
 
             if (user == null)
             {
@@ -76,7 +85,7 @@ namespace PassportGenerationSystem.Controllers
                 return RedirectToAction("ViewUsers");
             }
 
-            return View(user); // Pass the user details to confirmation view
+            return View(user); 
         }
 
         /// <summary>
@@ -89,7 +98,7 @@ namespace PassportGenerationSystem.Controllers
         {
             try
             {
-                bool isDeleted = accountDal.DeleteUser(id);
+                bool isDeleted = account_Dal.DeleteUser(id);
 
                 if (isDeleted)
                 {
@@ -102,9 +111,10 @@ namespace PassportGenerationSystem.Controllers
 
                 return RedirectToAction("ViewUsers");
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                TempData["ErrorMessage"] = "An error occurred: " + exception.Message;
+                ErrorLogger.LogError(ex);
+                TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
                 return RedirectToAction("ViewUsers");
             }
         }
@@ -130,8 +140,9 @@ namespace PassportGenerationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    admin.Password = EncryptionHelper.EncryptPassword(admin.Password);
                     admin.Role = "Admin";
-                    accountDal.AddNewAdmin(admin);
+                    account_Dal.AddNewAdmin(admin);
                     TempData["SuccessMessage"] = "Admin account created successfully.";
                     return RedirectToAction("SignIn", "Default");
                 }
@@ -142,6 +153,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "Error while adding new admin: " + ex.Message;
             }
 
@@ -171,6 +183,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while fetching the application list: " + ex.Message;
             }
 
@@ -263,6 +276,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
                 return RedirectToAction("AdminDashboard");
             }
@@ -289,6 +303,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while fetching the application: " + ex.Message;
                 return RedirectToAction("ApplicationList");
             }
@@ -345,6 +360,7 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while updating the application: " + ex.Message;
             }
 
@@ -367,7 +383,7 @@ namespace PassportGenerationSystem.Controllers
                     return RedirectToAction("SignIn", "Default");
                 }
 
-                feedbackList = accountDal.GetAllFeedback(); 
+                feedbackList = account_Dal.GetAllFeedback(); 
                 if (feedbackList.Count == 0)
                 {
                     TempData["ErrorMessage"] = "No feedback available.";
@@ -375,10 +391,39 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred while fetching feedback: " + ex.Message;
             }
 
             return View(feedbackList); 
+        }
+
+        /// <summary>
+        /// Handles the deletion of an feddback.
+        /// </summary>
+        /// <param name="feedId">The ID of the feedback to delete.</param>
+        /// <returns>Redirects to the ViewApplication action.</returns>
+        [HttpPost]
+        public IActionResult DeleteFeedback(int feedId)
+        {
+            try
+            {
+                bool isDeleted = account_Dal.DeleteFeedback(feedId);
+                if (isDeleted)
+                {
+                    TempData["SuccessMessage"] = "Feedback deleted successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Feedback not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.LogError(ex);
+                TempData["ErrorMessage"] = "An error occurred while deleting feedback: " + ex.Message;
+            }
+            return RedirectToAction("ViewFeedback");
         }
 
     }

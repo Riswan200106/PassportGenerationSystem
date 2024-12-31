@@ -2,16 +2,21 @@
 using Microsoft.AspNetCore.Http; 
 using PassportGenerationSystem.DAL;
 using PassportGenerationSystem.Models;
+using PassportGenerationSystem.EncryptHelper;
 
 namespace PassportGenerationSystem.Controllers
 {
     public class DefaultController : Controller
     {
-        private readonly Account_DAL accountDal;
+        private readonly Account_DAL account_Dal;
 
-        public DefaultController()
+        /// <summary>
+        /// Constructor to initialize DefaultController with a DAL instance using Dependency Injection.
+        /// </summary>
+        /// <param name="accountDal">Instance of Account_DAL provided by the DI container.</param>
+        public DefaultController(Account_DAL accountDal)
         {
-            accountDal = new Account_DAL();
+            this.account_Dal = accountDal; 
         }
 
         /// <summary>
@@ -38,13 +43,14 @@ namespace PassportGenerationSystem.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    accountDal.AddFeedback(feedback); 
+                    account_Dal.AddFeedback(feedback); 
                     TempData["SuccessMessage"] = "Thank you for your feedback!";
                     return RedirectToAction("Contact");
                 }
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
             }
 
@@ -79,9 +85,18 @@ namespace PassportGenerationSystem.Controllers
                 if (ModelState.IsValid)
                 {
                     signup.Role = "User";
-                    accountDal.Signup(signup);
-                    TempData["SuccessMessage"] = "Signup successful.";
-                    return RedirectToAction("SignIn");
+                    signup.Password = EncryptionHelper.EncryptPassword(signup.Password);
+                    string resultMessage = account_Dal.Signup(signup);
+
+                    if (resultMessage == "Signup successful.")
+                    {
+                        TempData["SuccessMessage"] = resultMessage;
+                        return RedirectToAction("SignIn");
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = resultMessage;
+                    }
                 }
                 else
                 {
@@ -90,8 +105,10 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "Error while creating user: " + ex.Message;
             }
+
             return View(signup);
         }
 
@@ -117,33 +134,42 @@ namespace PassportGenerationSystem.Controllers
                 {
                     if (Username == "adminmain" && Password == "Admin@123")
                     {
-                        HttpContext.Session.SetInt32("UserId", 0); 
+                        HttpContext.Session.SetInt32("UserId", 0);
                         HttpContext.Session.SetString("Username", "Admin");
                         HttpContext.Session.SetString("Role", "Admin");
 
                         TempData["SuccessMessage"] = "Welcome, Admin!";
                         return RedirectToAction("AdminDashboard", "Admin");
                     }
-                    var user = accountDal.Signin(Username, Password);
+                    var user = account_Dal.Signin(Username);
+
                     if (user != null)
                     {
-                        HttpContext.Session.SetInt32("UserId", user.Id);
-                        HttpContext.Session.SetString("Username", user.FirstName);
-                        HttpContext.Session.SetString("Role", user.Role);
+                        string encryptedPassword = EncryptionHelper.EncryptPassword(Password);
+                        if (user.Password == encryptedPassword)
+                        {
+                            HttpContext.Session.SetInt32("UserId", user.Id);
+                            HttpContext.Session.SetString("Username", user.FirstName);
+                            HttpContext.Session.SetString("Role", user.Role);
 
-                        if (user.Role == "Admin")
-                        {
-                            TempData["SuccessMessage"] = $"Welcome, Admin {user.FirstName}!";
-                            return RedirectToAction("AdminDashboard", "Admin");
-                        }
-                        else if (user.Role == "User")
-                        {
-                            TempData["SuccessMessage"] = $"Welcome, {user.FirstName + user.LastName}";
-                            return RedirectToAction("UserDashboard", "User");
+                            if (user.Role == "Admin")
+                            {
+                                TempData["SuccessMessage"] = $"Welcome, Admin {user.FirstName}!";
+                                return RedirectToAction("AdminDashboard", "Admin");
+                            }
+                            else if (user.Role == "User")
+                            {
+                                TempData["SuccessMessage"] = $"Welcome, {user.FirstName + user.LastName}!";
+                                return RedirectToAction("UserDashboard", "User");
+                            }
+                            else
+                            {
+                                TempData["ErrorMessage"] = "Invalid role.";
+                            }
                         }
                         else
                         {
-                            TempData["ErrorMessage"] = "Invalid role.";
+                            TempData["ErrorMessage"] = "Invalid username or password.";
                         }
                     }
                     else
@@ -158,11 +184,13 @@ namespace PassportGenerationSystem.Controllers
             }
             catch (Exception ex)
             {
+                ErrorLogger.LogError(ex);
                 TempData["ErrorMessage"] = "Error during sign-in: " + ex.Message;
             }
 
             return View();
         }
+
 
         /// <summary>
         /// Logs the user out by clearing the session.

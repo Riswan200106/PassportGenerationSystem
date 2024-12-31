@@ -4,18 +4,103 @@
     ViewData["Title"] = "CreateUser";
 }
 
+
 <style>
-    h1, .row {
-        padding-left: 60px;
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        color: #333;
+        text-align: center;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .row {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .col-md-4 {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
     }
 
     .form-group {
-        padding-bottom: 20px;
+        margin-bottom: 20px;
     }
 
-</style>
+    .form-control {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 14px;
+    }
 
-<h1>Signup</h1>
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 15px;
+        font-size: 16px;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .alert {
+        font-size: 14px;
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+    .form-check-label {
+        margin-right: 15px;
+    }
+
+    select.form-control {
+        appearance: none;
+        background: #fff;
+        padding: 10px;
+    }
+
+    .input-group-append button {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        cursor: pointer;
+    }
+
+        .input-group-append button:hover {
+            background-color: #e9ecef;
+        }
+</style>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -29,12 +114,13 @@
         @TempData["ErrorMessage"]
     </div>
 }
-<hr />
 <div class="row">
     <div class="col-md-4">
+        
+<h1>Signup</h1>
         <form asp-action="CreateUser">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" />
@@ -69,6 +155,7 @@
                 </div>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" />
@@ -91,7 +178,6 @@
                     <option value="Kerala">Kerala</option>
                     <option value="Tamil Nadu">Tamil Nadu</option>
                     <option value="Karnataka">Karnataka</option>
-                    <!-- Add more states as needed -->
                 </select>
                 <span asp-validation-for="State" class="text-danger"></span>
             </div>

@@ -16,64 +16,106 @@
     </div>
 }
 
-
 <style>
-    h1,.row{
-        padding-left: 60px;
-    }
-    .form-group{
-        padding-bottom:20px;
+    h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #343a40;
+        margin-bottom: 20px;
+        text-align:center;
     }
 
+    .form-container {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .btn-outline-secondary {
+        border-color: #ced4da;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
+    .alert {
+        margin-top: 15px;
+    }
 </style>
-<h1 >Signin</h1>
 
+<div class="form-container">
+    <h1>Sign in</h1>
+    <hr />
+    <form asp-action="SignIn">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<hr />
-<div class="row" style="padding-left:60px;">
-    <div class="col-md-4">
-        <form asp-action="SignIn">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            
-            <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <div class="input-group">
-                    <input asp-for="Password" type="password" class="form-control" id="passwordField" />
-                    <div class="input-group-append">
-                        <button type="button" class="btn btn-outline-secondary" id="togglePassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
+        <div class="form-group">
+            <label asp-for="Username" class="control-label"></label>
+            <input asp-for="Username" class="form-control"/>
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
 
-            <div class="form-group">
-                <input type="submit" value="Signin" class="btn btn-primary" />
+        <div class="form-group">
+            <label asp-for="Password" class="control-label"></label>
+            <div class="input-group">
+                <input asp-for="Password" type="password" class="form-control" id="passwordField" />
+                <button type="button" class="btn btn-outline-secondary" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                </button>
             </div>
-            <div class="form-group">
-                <p>Don't have an account? <a href="@Url.Action("CreateUser", "Default")">Signup</a></p>
-            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
 
-        </form>
-    </div>
+        <div class="form-group">
+            <input type="submit" value="Sign In" class="btn btn-primary w-100" />
+        </div>
+
+        <div class="form-group text-center">
+            <p>Don't have an account? <a href="@Url.Action("CreateUser", "Default")" class="link-primary">Sign Up</a></p>
+        </div>
+    </form>
 </div>
 
-
 <script>
+    // Auto-hide alerts after a few seconds
     window.setTimeout(function () {
-           $(".alert").fadeTo(5000, 0).slideUp(500, function () {
-               $(this).remove();
-           });
-       }, 4000);
+        $(".alert").fadeTo(5000, 0).slideUp(500, function () {
+            $(this).remove();
+        });
+    }, 4000);
 
-       document.getElementById("togglePassword").addEventListener("click", function () {
+    // Toggle password visibility
+    document.getElementById("togglePassword").addEventListener("click", function () {
         const passwordField = document.getElementById("passwordField");
         const toggleIcon = this.querySelector("i");
 
@@ -90,5 +132,7 @@
 </script>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -15,9 +15,10 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-blue">
             <div class="container">
                 <!-- Logo Section -->
-                <a class="navbar-brand" href="@Url.Action("Index", "Default")">
-                    <img src="~/img/logo-photoaidcom-cropped.png" alt="Logo" class="logo">
-                </a>
+                <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index", "Default")" >
+                <img src="~/img/logo-photoaidcom-cropped.png" alt="Logo" class="logo">
+                <span style="font-size:50px;">P.G.S</span> 
+            </a>
                 <!-- Navbar Toggle Button for Mobile Devices -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -32,10 +33,10 @@
                             <a class="nav-link" href="@Url.Action("About", "Default")">About Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("SignIn", "Default")">Signin</a>
+                            <a class="nav-link" href="@Url.Action("SignIn", "Default")">Sign in</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="@Url.Action("CreateUser", "Default")">Signup</a>
+                            <a class="nav-link" href="@Url.Action("CreateUser", "Default")">Sign up</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("Contact", "Default")">Contact Us</a>
