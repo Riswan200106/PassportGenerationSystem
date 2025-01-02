@@ -11,7 +11,6 @@ namespace PassportGenerationSystem.Models
         [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name must contain letters only.")]
         public string Name { get; set; }
 
-
         [Required]
         [EmailAddress]
         [Display(Name = "Email Address")]
